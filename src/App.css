@@ -1,0 +1,42 @@
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    table-layout: fixed;
+    min-width: 600px;
+}
+
+.table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.truncate {
+    max-width: 150px;
+}
+
+.btn-icon {
+    padding: 5px;
+    margin: 0 3px;
+}
+
+.modal-content {
+    margin: 20px auto;
+    max-width: 95%;
+}
+
+@media (min-width: 768px) {
+    .table {
+        min-width: auto;
+    }
+
+    .truncate {
+        max-width: 250px;
+    }
+
+    .modal-content {
+        max-width: 600px;
+    }
+}
