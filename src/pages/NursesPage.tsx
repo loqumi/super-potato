@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Nurse } from '../types';
 import EmployeeForm from '../components/EmployeeForm';
 import { Pencil, Trash, Plus } from 'react-bootstrap-icons';
+import useMobileView from "../hooks/useMobileView";
 
 const mockNurses: Nurse[] = [
     { id: '1', fullName: 'Alice Johnson', department: 'cardiology' },
@@ -9,6 +10,7 @@ const mockNurses: Nurse[] = [
 ];
 
 const NursesPage: React.FC = () => {
+    const isMobile = useMobileView();
     const [nurses, setNurses] = useState<Nurse[]>(mockNurses);
     const [showForm, setShowForm] = useState(false);
     const [selectedNurse, setSelectedNurse] = useState<Nurse | null>(null);
@@ -66,6 +68,45 @@ const NursesPage: React.FC = () => {
         </div>
     );
 
+    const renderDesktopView = () => (
+        <table className="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {nurses.map(nurse => (
+                <tr key={nurse.id}>
+                    <td className="text-truncate" title={nurse.fullName}>
+                        {nurse.fullName}
+                    </td>
+                    <td>{nurse.department}</td>
+                    <td>
+                        <button
+                            className="btn btn-warning btn-sm me-2"
+                            onClick={() => {
+                                setSelectedNurse(nurse);
+                                setShowForm(true);
+                            }}
+                        >
+                            <Pencil size={16} />
+                        </button>
+                        <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleDelete(nurse.id)}
+                        >
+                            <Trash size={16} />
+                        </button>
+                    </td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+    );
+
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
@@ -81,40 +122,7 @@ const NursesPage: React.FC = () => {
                 </button>
             </div>
 
-            <table className="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {nurses.map(nurse => (
-                    <tr key={nurse.id}>
-                        <td>{nurse.fullName}</td>
-                        <td>{nurse.department}</td>
-                        <td>
-                            <button
-                                className="btn btn-warning btn-sm me-2"
-                                onClick={() => {
-                                    setSelectedNurse(nurse);
-                                    setShowForm(true);
-                                }}
-                            >
-                                <Pencil size={16} />
-                            </button>
-                            <button
-                                className="btn btn-danger btn-sm"
-                                onClick={() => handleDelete(nurse.id)}
-                            >
-                                <Trash size={16} />
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            {isMobile ? renderMobileView() : renderDesktopView()}
 
             {showForm && (
                 <EmployeeForm
