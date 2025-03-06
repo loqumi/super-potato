@@ -65,7 +65,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                             required
                             type="text"
                             value={fullName}
-                            maxLength={30}
                             onChange={(e) => setFullName(e.target.value)}
                         />
                     </Form.Group>
